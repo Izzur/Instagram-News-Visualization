@@ -1,0 +1,166 @@
+@prefix skos: 			<http://www.w3.org/2004/02/skos/core#> .
+@prefix rdf: 			<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: 			<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      		<http://www.w3.org/2001/XMLSchema#> .
+@prefix qb: 			<http://purl.org/linked-data/cube#> .
+@prefix sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> .
+@prefix sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> .
+@prefix sdmx-measure: 	<http://purl.org/linked-data/sdmx/2009/measure#> .
+@prefix konsep: 		<http://example.com/konsep#> .
+@prefix dimensi: 		<http://example.com/dimensi#> .
+@prefix stats: 			<http://example.com/datastatistik#> .
+@prefix vocab: 			<http://example.com/vocab> .
+@prefix kategori: 		<http://example.com/kategori#> .
+@prefix topik: 			<http://example.com/topikhangat#> .
+@prefix news: 			<http://example.com/news#> .
+
+vocab:kategori a rdfs:Class .
+vocab:topik a rdfs:Class .
+
+kategori:gayahidup
+	a skos:Concept, vocab:kategori ;
+	rdfs:label "Gaya Hidup" ;
+	skos:inScheme konsep:Kategori .
+
+kategori:lingkungan
+	a skos:Concept, vocab:kategori ;
+	rdfs:label "Lingkungan" ;
+	skos:inScheme konsep:Kategori .
+
+kategori:pemerintah
+	a skos:Concept, vocab:kategori ;
+	rdfs:label "Pemerintah" ;
+	skos:inScheme konsep:Kategori .
+
+kategori:saintek
+	a skos:Concept, vocab:kategori ;
+	rdfs:label "Saintek" ;
+	skos:inScheme konsep:Kategori .
+
+kategori:olahraga
+	a skos:Concept, vocab:kategori ;
+	rdfs:label "Olahraga" ;
+	skos:inScheme konsep:Kategori .
+
+kategori:kriminal
+	a skos:Concept, vocab:kategori ;
+	rdfs:label "Kriminalitas" ;
+	skos:inScheme konsep:Kategori .
+
+kategori:hiburan
+	a skos:Concept, vocab:kategori ;
+	rdfs:label "Entertainment" ;
+	skos:inScheme konsep:Kategori .
+
+topik:kesehatan
+	a skos:Concept, vocab:hangat ;
+	rdfs:label "Kesehatan" ;
+	skos:inScheme konsep:hangat .
+
+topik:abu
+	a skos:Concept, vocab:hangat ;
+	rdfs:label "Abu Gunung" ;
+	skos:inScheme konsep:hangat .
+
+topik:keuangan
+	a skos:Concept, vocab:hangat ;
+	rdfs:label "Keuangan" ;
+	skos:inScheme konsep:hangat .
+
+topik:konsorsium
+	a skos:Concept, vocab:hangat ;
+	rdfs:label "Konsorsium" ;
+	skos:inScheme konsep:hangat .
+
+topik:arema
+	a skos:Concept, vocab:hangat ;
+	rdfs:label "Arema Cronus" ;
+	skos:inScheme konsep:hangat .
+
+topik:pemerkosaan
+	a skos:Concept, vocab:hangat ;
+	rdfs:label "Pemerkosaan" ;
+	skos:inScheme konsep:hangat .
+
+topik:aadc
+	a skos:Concept, vocab:hangat ;
+	rdfs:label "Ada Apa Dengan Cinta" ;
+	skos:inScheme konsep:hangat .
+
+konsep:kategori a skos:ConceptScheme ;
+	rdfs:label "Kategori" ;
+	skos:hasTopConcept kategori:gayahidup, kategori:lingkungan, kategori:pemerintah, kategori:saintek, kategori:olahraga, kategori:kriminal, kategori:hiburan;
+	skos:notation "kategori" .	
+
+konsep:hangat a skos:ConceptScheme ;
+	rdfs:label "Topik Ter-hangat" ;
+	skos:hasTopConcept topik:kesehatan, topik:abu, topik:keuangan,
+	topik:konsorsium, topik:arema, topik:pemerkosaan, topik:aadc;
+	skos:notation "subkategori" .
+
+dimensi:kategori
+	qb:CodeList konsep:kategori ;
+	a rdfs:Property, qb:DimensionProperty ;
+	rdfs:range skos:Concept .
+
+dimensi:hangat
+	qb:CodeList konsep:hangat ;
+	a rdfs:Property, qb:DimensionProperty ;
+	rdfs:range skos:Concept .
+
+stats:jmlh_posting a rdf:Property, qb:MeasureProperty ;
+	rdfs:label "Jumlah Posting";
+	rdfs:range xsd:integer .
+
+stats:datanewspost a qb:DataStructureDefinition;
+    # The dimensions
+    qb:component 	[ qb:dimension dimensi:kategori],
+					[ qb:dimension dimensi:hangat],
+					[ qb:measure stats:jmlh_posting] .
+
+stats:datasetNews 
+	a qb:DataSet;
+    rdfs:label "Data Berita di Instagram";
+    qb:structure stats:datasetNews . 
+
+stats:data_1 a qb:Observation ;
+	qb:dataSet stats:datasetNews ;
+	dimensi:kategori kategori:gayahidup ;
+	dimensi:hangat topik:kesehatan ;
+	stats:jmlh_posting 51  .
+
+stats:data_2 a qb:Observation ;
+	qb:dataSet stats:datasetNews ;
+	dimensi:kategori kategori:lingkungan ;
+	dimensi:hangat topik:abu ;
+	stats:jmlh_posting 79  .
+
+stats:data_3 a qb:Observation ;
+	qb:dataSet stats:datasetNews ;
+	dimensi:kategori kategori:pemerintah ;
+	dimensi:hangat topik:keuangan ;
+	stats:jmlh_posting 144  .
+
+stats:data_4 a qb:Observation ;
+	qb:dataSet stats:datasetNews ;
+	dimensi:kategori kategori:saintek ;
+	dimensi:hangat topik:konsorsium ;
+	stats:jmlh_posting 20  .
+
+stats:data_5 a qb:Observation ;
+	qb:dataSet stats:datasetNews ;
+	dimensi:kategori kategori:olahraga ;
+	dimensi:hangat topik:arema ;
+	stats:jmlh_posting 38  .
+
+stats:data_6 a qb:Observation ;
+	qb:dataSet stats:datasetNews ;
+	dimensi:kategori kategori:kriminal ;
+	dimensi:hangat topik:pemerkosaan ;
+	stats:jmlh_posting 28  .
+
+stats:data_7 a qb:Observation ;
+	qb:dataSet stats:datasetNews ;
+	dimensi:kategori kategori:entertainment ;
+	dimensi:hangat topik:aadc ;
+	stats:jmlh_posting 19  .
